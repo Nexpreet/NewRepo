@@ -11,5 +11,10 @@ namespace Shared
     {
         public BoardModel Board { get; set; }
         public GameStatus GameStatus { get; set; }
+
+        public BoardViewModel(BoardModel board) {
+            Board = board;
+            GameStatus = GameStatus.Created;
+        }  
     }
 }

@@ -25,11 +25,7 @@ namespace WebMineSweeper.Controllers
         [HttpGet("createboard")]
         public BoardViewModel CreateBoard(int height, int width, int numberOfMines)
         {
-            return new BoardViewModel
-            {
-                Board = new BoardModel(height, width, numberOfMines),
-                GameStatus = GameStatus.Created
-            };
+            return new BoardViewModel(new BoardModel(height, width, numberOfMines));
         }
 
         // POST api/<MineSweeperController>
