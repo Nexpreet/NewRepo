@@ -8,5 +8,6 @@ namespace Shared
 {
     public interface IMineSweeperRepo
     {
+        bool SaveGame(BoardModel board);
     }
 }
