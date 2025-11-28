@@ -9,5 +9,6 @@ namespace Shared
     public interface IMineSweeperBL
     {
         BoardViewModel CreateGame(int width, int height, int numberOfMines);
+        BoardViewModel FieldClick(int row, int column);
     }
 }

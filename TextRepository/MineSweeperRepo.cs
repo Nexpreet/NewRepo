@@ -22,6 +22,18 @@ namespace TextRepository
                 return false;
             }
         }
+
+        public BoardModel GetGame()
+        {
+            try
+            {
+                return ReadFromFile();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
         private void SaveToFile(BoardModel board)
         {
             File.WriteAllText("board", JsonSerializer.Serialize(board));

@@ -9,6 +9,12 @@ namespace WebMineSweeper.Controllers
     [ApiController]
     public class MineSweeperController : ControllerBase
     {
+        protected IMineSweeperBL _mineSweeperBL { get; }
+        public MineSweeperController(IMineSweeperBL mineSweeperBL)
+        {
+            _mineSweeperBL = mineSweeperBL;
+        }
+
         // GET api/<MineSweeperController>/5
         [HttpGet("{id}")]
         public string Get(int id)
@@ -17,15 +23,15 @@ namespace WebMineSweeper.Controllers
         }
 
         [HttpGet]
-        public string FieldClick(int row, int column)
+        public BoardViewModel FieldClick(int row, int column)
         {
-            return "value";
+            return _mineSweeperBL.FieldClick(row, column);
         }
 
         [HttpGet("createboard")]
-        public BoardViewModel CreateBoard(int height, int width, int numberOfMines)
+        public BoardViewModel CreateBoard(int width, int height, int numberOfMines)
         {
-            return new BoardViewModel(new BoardModel(height, width, numberOfMines));
+            return _mineSweeperBL.CreateGame(width, height, numberOfMines);
         }
 
         // POST api/<MineSweeperController>
