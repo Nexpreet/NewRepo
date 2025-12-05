@@ -49,9 +49,12 @@ namespace BussinesLogic
                 OpenFields(row, col, board);
             }
 
+
+
+
             return boardViewModel;   
         }
-
+              //TODO Expand response; Check CalculateNumberOfMinesAround method 
         private void OpenFields(int row, int col, BoardModel board)
         {
             for (int i = row - 1; i <= row + 1; i++)
@@ -67,9 +70,22 @@ namespace BussinesLogic
                         board.Fields[i][j].IsOpened = true;
                         board.Fields[i][j].NumberOfMinesAround = CalculateNumberOfMinesAround(board, i, j);
                         OpenFields(i, j, board);
+
+                        if(board.Fields[i][j].NumberOfMinesAround == 0) {
+                            OpenFields(i, j, board);
+                            board.Fields[i][j].NumberOfMinesAround = CalculateNumberOfMinesAround(board, i, j);
+
+                        }  
+                        else 
+                        {
+                            board.Fields[i][j].NumberOfMinesAround = CalculateNumberOfMinesAround(board, i, j);
+
+                        }
+
                     }
                 }
             }
+
         }
         private void CreateMineField(BoardModel board) 
         {

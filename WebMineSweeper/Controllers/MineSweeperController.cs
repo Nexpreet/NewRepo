@@ -22,7 +22,7 @@ namespace WebMineSweeper.Controllers
             return "value";
         }
 
-        [HttpGet]
+        [HttpGet("fieldclick")]
         public BoardViewModel FieldClick(int row, int column)
         {
             return _mineSweeperBL.FieldClick(row, column);
