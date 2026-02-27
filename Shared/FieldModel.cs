@@ -12,6 +12,6 @@ namespace Shared
         public bool HasMine { get; set; }
         public bool IsOpened { get; set; }
         public bool HasFlag { get; set; }
-        public int NumberOfMinesAround { get; set; }
+        public int? NumberOfMinesAround { get; set; }
     }
 }

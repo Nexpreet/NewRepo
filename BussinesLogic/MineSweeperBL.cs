@@ -39,9 +39,10 @@ namespace BussinesLogic
             BoardModel board = _repo.GetGame();
             BoardViewModel boardViewModel = new BoardViewModel(board);
 
+            board.Fields[row][col].IsOpened = true;
+
             if (board.Fields[row][col].HasMine)
-            {
-                board.Fields[row][col].IsOpened = true;               
+            { 
                 boardViewModel.GameStatus = GameStatus.Lost;
             }
             else
@@ -49,54 +50,54 @@ namespace BussinesLogic
                 OpenFields(row, col, board);
             }
 
+            _repo.SaveGame(board);
 
-
-
-            return boardViewModel;   
+            return boardViewModel;
         }
-              //TODO Expand response; Check CalculateNumberOfMinesAround method 
+        //TODO Expand response; Check CalculateNumberOfMinesAround method 
         private void OpenFields(int row, int col, BoardModel board)
         {
+
+            if(!board.Fields[row][col].NumberOfMinesAround.HasValue)
+                board.Fields[row][col].NumberOfMinesAround = CalculateNumberOfMinesAround(board, row, col);
+
+            if(board.Fields[row][col].NumberOfMinesAround.Value > 0)
+            {
+                board.Fields[row][col].IsOpened = true;
+                return;
+            }
+
             for (int i = row - 1; i <= row + 1; i++)
             {
                 for (int j = col - 1; j <= col + 1; j++)
                 {
-                    if (i >= 0 && i < board.Height
-                        && j >= 0 && j < board.Width
-                        && !board.Fields[i][j].HasMine
-                        && !board.Fields[i][j].IsOpened
-                        && i != row && j != col)
+                    if (i >= 0 && i < board.Height && j >= 0 && j < board.Width && !(i == row && j == col))
                     {
-                        board.Fields[i][j].IsOpened = true;
-                        board.Fields[i][j].NumberOfMinesAround = CalculateNumberOfMinesAround(board, i, j);
-                        OpenFields(i, j, board);
-
-                        if(board.Fields[i][j].NumberOfMinesAround == 0) {
-                            OpenFields(i, j, board);
-                            board.Fields[i][j].NumberOfMinesAround = CalculateNumberOfMinesAround(board, i, j);
-
-                        }  
-                        else 
+                        if (!board.Fields[i][j].HasMine)
                         {
-                            board.Fields[i][j].NumberOfMinesAround = CalculateNumberOfMinesAround(board, i, j);
-
+                            if (!board.Fields[i][j].IsOpened)
+                            {
+                                board.Fields[i][j].IsOpened = true;
+                                OpenFields(i, j, board);
+                            }
                         }
-
                     }
                 }
             }
-
         }
-        private void CreateMineField(BoardModel board) 
+
+        private void CreateMineField(BoardModel board)
         {
             Random rand = new Random();
             int placedMines = 0;
 
-            while (placedMines < board.NumberOfMines) {
+            while (placedMines < board.NumberOfMines)
+            {
                 int row = rand.Next(board.Height);
                 int col = rand.Next(board.Width);
 
-                if (!board.Fields[row][col].HasMine) {
+                if (!board.Fields[row][col].HasMine)
+                {
                     board.Fields[row][col].HasMine = true;
                     placedMines++;
                 }
@@ -111,11 +112,11 @@ namespace BussinesLogic
             {
                 for (int j = col - 1; j <= col + 1; j++)
                 {
-                    if(i >= 0 && i < board.Height 
-                        && j >= 0 && j < board.Width 
+                    if (i >= 0 && i < board.Height
+                        && j >= 0 && j < board.Width
                         && board.Fields[i][j].HasMine
-                        && i != row && j != col)
-                        numberOfMines++; 
+                        && !(i == row && j == col))
+                        numberOfMines++;
                 }
             }
 
