@@ -28,6 +28,18 @@ namespace WebMineSweeper.Controllers
             return _mineSweeperBL.FieldClick(row, column);
         }
 
+        [HttpGet("addflag")]
+        public bool AddFlag(int row, int column)
+        {
+            return _mineSweeperBL.AddFlag(row, column);
+        }
+
+        [HttpGet("removeflag")]
+        public bool RemoveFlag(int row, int column)
+        {
+            return _mineSweeperBL.RemoveFlag(row, column);
+        }
+
         [HttpGet("createboard")]
         public BoardViewModel CreateBoard(int width, int height, int numberOfMines)
         {

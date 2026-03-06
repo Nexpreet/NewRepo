@@ -10,5 +10,8 @@ namespace Shared
     {
         BoardViewModel CreateGame(int width, int height, int numberOfMines);
         BoardViewModel FieldClick(int row, int column);
+
+        bool AddFlag(int row, int col);
+        bool RemoveFlag(int row, int col);
     }
 }

@@ -30,8 +30,7 @@ namespace BussinesLogic
 
             _repo.SaveGame(board);
 
-            return new BoardViewModel(board);
-
+            return BoardViewModel.CleanBoardViewModelFromMineInfo(new BoardViewModel(board));
         }
 
         public BoardViewModel FieldClick(int row, int col)
@@ -42,7 +41,7 @@ namespace BussinesLogic
             board.Fields[row][col].IsOpened = true;
 
             if (board.Fields[row][col].HasMine)
-            { 
+            {
                 boardViewModel.GameStatus = GameStatus.Lost;
             }
             else
@@ -52,16 +51,52 @@ namespace BussinesLogic
 
             _repo.SaveGame(board);
 
-            return boardViewModel;
+            return BoardViewModel.CleanBoardViewModelFromMineInfo(boardViewModel);
         }
+
+        public bool AddFlag(int row, int col)
+        {
+            BoardModel board = _repo.GetGame();
+            BoardViewModel boardViewModel = new BoardViewModel(board);
+
+            if (!board.Fields[row][col].IsOpened)
+            {
+                board.Fields[row][col].HasFlag = true;
+
+                _repo.SaveGame(board);
+
+                return true;
+            }
+            return false;
+        }
+
+        public bool RemoveFlag(int row, int col)
+        {
+            BoardModel board = _repo.GetGame();
+            BoardViewModel boardViewModel = new BoardViewModel(board);
+
+            if (board.Fields[row][col].HasFlag)
+            {
+                board.Fields[row][col].HasFlag = false;
+
+                _repo.SaveGame(board);
+
+                return true;
+            }
+
+            return false;
+        }
+
         //TODO Expand response; Check CalculateNumberOfMinesAround method 
         private void OpenFields(int row, int col, BoardModel board)
         {
+            if (board.Fields[row][col].HasFlag)
+                return;
 
-            if(!board.Fields[row][col].NumberOfMinesAround.HasValue)
+            if (!board.Fields[row][col].NumberOfMinesAround.HasValue)
                 board.Fields[row][col].NumberOfMinesAround = CalculateNumberOfMinesAround(board, row, col);
 
-            if(board.Fields[row][col].NumberOfMinesAround.Value > 0)
+            if (board.Fields[row][col].NumberOfMinesAround.Value > 0)
             {
                 board.Fields[row][col].IsOpened = true;
                 return;

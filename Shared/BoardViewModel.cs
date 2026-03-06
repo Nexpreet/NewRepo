@@ -12,9 +12,23 @@ namespace Shared
         public BoardModel Board { get; set; }
         public GameStatus GameStatus { get; set; }
 
-        public BoardViewModel(BoardModel board) {
+        public BoardViewModel(BoardModel board)
+        {
             Board = board;
             GameStatus = GameStatus.Created;
-        }  
+        }
+
+        public static BoardViewModel CleanBoardViewModelFromMineInfo(BoardViewModel boardViewModel)
+        {
+            for (int i = 0; i < boardViewModel.Board.Height; i++)
+            {
+                for (int j = 0; j < boardViewModel.Board.Width; j++)
+                {
+                    boardViewModel.Board.Fields[i][j].HasMine = false;
+                }
+            }
+
+            return boardViewModel;
+        }
     }
 }
