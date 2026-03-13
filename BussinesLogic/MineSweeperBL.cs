@@ -51,6 +51,9 @@ namespace BussinesLogic
 
             _repo.SaveGame(board);
 
+            if (boardViewModel.GameStatus == GameStatus.Lost)
+                return boardViewModel;
+            
             return BoardViewModel.CleanBoardViewModelFromMineInfo(boardViewModel);
         }
 

@@ -1,7 +1,9 @@
 
 using BussinesLogic;
+using Microsoft.Data.SqlClient;
 using Shared;
-using TextRepository;
+using SQLRepository;
+using System.Data;
 
 namespace WebMineSweeper
 {
@@ -16,6 +18,11 @@ namespace WebMineSweeper
             builder.Services.AddControllers();
             builder.Services.AddTransient<IMineSweeperBL, MineSweeperBL>();
             builder.Services.AddScoped<IMineSweeperRepo, MineSweeperRepo>();
+
+            // SQL Connection
+            builder.Services.AddScoped<IDbConnection>(sp =>
+                new SqlConnection(builder.Configuration.GetConnectionString("MineSweeperDB"))
+            );
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
