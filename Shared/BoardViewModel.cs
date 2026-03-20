@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Shared
@@ -29,6 +30,11 @@ namespace Shared
             }
 
             return boardViewModel;
+        }
+
+        public static BoardViewModel GetFromJSON(string json)
+        {
+            return JsonSerializer.Deserialize<BoardViewModel>(json);
         }
     }
 }
