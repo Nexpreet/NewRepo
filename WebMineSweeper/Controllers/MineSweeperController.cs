@@ -16,52 +16,34 @@ namespace WebMineSweeper.Controllers
         }
 
         // GET api/<MineSweeperController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("getboard")]
+        public BoardViewModel GetBoard()
         {
-            return "value";
+            return _mineSweeperBL.GetBoard();
         }
 
-        [HttpGet("fieldclick")]
+        [HttpGet("fieldclick/{row}/{column}")]
         public BoardViewModel FieldClick(int row, int column)
         {
             return _mineSweeperBL.FieldClick(row, column);
         }
 
-        [HttpGet("addflag")]
+        [HttpGet("addflag/{row}/{column}")]
         public bool AddFlag(int row, int column)
         {
             return _mineSweeperBL.AddFlag(row, column);
         }
 
-        [HttpGet("removeflag")]
+        [HttpGet("removeflag/{row}/{column}")]
         public bool RemoveFlag(int row, int column)
         {
             return _mineSweeperBL.RemoveFlag(row, column);
         }
 
-        [HttpGet("createboard")]
+        [HttpGet("createboard/{width}/{height}/{numberOfMines}")]
         public BoardViewModel CreateBoard(int width, int height, int numberOfMines)
         {
             return _mineSweeperBL.CreateGame(width, height, numberOfMines);
-        }
-
-        // POST api/<MineSweeperController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<MineSweeperController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<MineSweeperController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

@@ -34,7 +34,13 @@ namespace Shared
 
         public static BoardViewModel GetFromJSON(string json)
         {
-            return JsonSerializer.Deserialize<BoardViewModel>(json);
+            // FIX 2: Add options to handle camelCase JSON vs PascalCase C# properties
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            return JsonSerializer.Deserialize<BoardViewModel>(json, options);
         }
     }
 }

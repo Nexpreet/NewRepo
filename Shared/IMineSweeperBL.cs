@@ -13,5 +13,6 @@ namespace Shared
 
         bool AddFlag(int row, int col);
         bool RemoveFlag(int row, int col);
+        BoardViewModel GetBoard();
     }
 }

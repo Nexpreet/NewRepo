@@ -41,7 +41,6 @@ namespace WebMineSweeper
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();

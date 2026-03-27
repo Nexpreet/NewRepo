@@ -160,5 +160,13 @@ namespace BussinesLogic
 
             return numberOfMines;
         }
+
+        public BoardViewModel GetBoard()
+        {
+            BoardModel board = _repo.GetGame();
+            BoardViewModel boardViewModel = new BoardViewModel(board);
+
+            return BoardViewModel.CleanBoardViewModelFromMineInfo(boardViewModel);
+        }
     }
 }

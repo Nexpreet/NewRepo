@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -14,9 +15,9 @@ namespace ConsoleGame
     {
         private readonly HttpClient _httpClient;
 
-        public Service() 
+        public Service()
         {
-            _httpClient=new HttpClient();
+            _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://localhost:7230/API/MineSweeper/");
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -24,25 +25,39 @@ namespace ConsoleGame
 
         public BoardViewModel FieldClick(int row, int column)
         {
-            HttpResponseMessage response =_httpClient.GetAsync("fieldClick").Result;
-            response.EnsureSuccessStatusCode(); // throw exception if not successful
-            BoardViewModel board=BoardViewModel.GetFromJSON(response.Content.ReadAsStringAsync().Result);
+            HttpResponseMessage response = GetResponseMessage($"fieldClick/{row}/{column}");
+            BoardViewModel board = BoardViewModel.GetFromJSON(response.Content.ReadAsStringAsync().Result);
             return board;
         }
 
-        /*public bool AddFlag(int row, int column)
+        public BoardViewModel AddFlag(int row, int column)
         {
-            return _mineSweeperBL.AddFlag(row, column);
-        }  
+            HttpResponseMessage response = GetResponseMessage($"addflag/{row}/{column}");
+            response = GetResponseMessage("getboard");
+            BoardViewModel board = BoardViewModel.GetFromJSON(response.Content.ReadAsStringAsync().Result);
+            return board;
+        }
 
-        public bool RemoveFlag(int row, int column)
+        public BoardViewModel RemoveFlag(int row, int column)
         {
-            return _mineSweeperBL.RemoveFlag(row, column);
+            HttpResponseMessage response = GetResponseMessage($"removeflag/{row}/{column}");
+            response = GetResponseMessage("getboard");
+            BoardViewModel board = BoardViewModel.GetFromJSON(response.Content.ReadAsStringAsync().Result);
+            return board;
         }
 
         public BoardViewModel CreateBoard(int width, int height, int numberOfMines)
         {
-            return _mineSweeperBL.CreateGame(width, height, numberOfMines);
-        } */
+            HttpResponseMessage response = GetResponseMessage($"createboard/{width}/{height}/{numberOfMines}");
+            BoardViewModel board = BoardViewModel.GetFromJSON(response.Content.ReadAsStringAsync().Result);
+            return board;
+        }
+
+        private HttpResponseMessage GetResponseMessage(string url)
+        {
+            HttpResponseMessage response = _httpClient.GetAsync(url).Result;
+            response.EnsureSuccessStatusCode();
+            return response;
+        }
     }
 }
