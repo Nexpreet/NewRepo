@@ -52,7 +52,12 @@ namespace ConsoleGame
             BoardViewModel board = BoardViewModel.GetFromJSON(response.Content.ReadAsStringAsync().Result);
             return board;
         }
-
+        public BoardViewModel GetBoard()
+        {
+            HttpResponseMessage response = GetResponseMessage($"getboard");
+            BoardViewModel board = BoardViewModel.GetFromJSON(response.Content.ReadAsStringAsync().Result);
+            return board;
+        }
         private HttpResponseMessage GetResponseMessage(string url)
         {
             HttpResponseMessage response = _httpClient.GetAsync(url).Result;

@@ -11,13 +11,47 @@ namespace Shared
     public class BoardViewModel
     {
         public BoardModel Board { get; set; }
-        public GameStatus GameStatus { get; set; }
+        private GameStatus gameStatus = GameStatus.Created;
+        public GameStatus GameStatus
+        {
 
+            get
+            {
+                int numberOfOpenedFields = 0;
+                for (int i = 0; i < Board.Height; i++)
+                {
+                    for (int j = 0; j < Board.Width; j++)
+                    {
+                        if (Board.Fields[i][j].HasMine && Board.Fields[i][j].IsOpened)
+                        {
+                            gameStatus = GameStatus.Lost;
+                            return gameStatus;
+                        }
+                        else if(Board.Fields[i][j].IsOpened)
+                        {
+                            numberOfOpenedFields++;
+                        }
+                    }
+                }
+                if(Board.Height * Board.Width - numberOfOpenedFields == Board.NumberOfMines)
+                {
+                    gameStatus = GameStatus.Won;
+                }
+                else
+                {
+                    gameStatus = GameStatus.Running; 
+                }
+                return gameStatus;
+            }
+            
+        }
+        
         public BoardViewModel(BoardModel board)
         {
             Board = board;
-            GameStatus = GameStatus.Created;
+            gameStatus = GameStatus.Created;
         }
+        
 
         public static BoardViewModel CleanBoardViewModelFromMineInfo(BoardViewModel boardViewModel)
         {

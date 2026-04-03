@@ -12,9 +12,7 @@ namespace ConsoleGame
         public void Play()
         {
             Service service = new Service();
-            BoardViewModel board = new BoardViewModel(
-                new BoardModel(10, 10, 25)
-                );
+            BoardViewModel board = service.GetBoard();
 
             bool playing = true;
 

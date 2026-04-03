@@ -38,21 +38,20 @@ namespace BussinesLogic
             BoardModel board = _repo.GetGame();
             BoardViewModel boardViewModel = new BoardViewModel(board);
 
-            board.Fields[row][col].IsOpened = true;
-
-            if (board.Fields[row][col].HasMine)
+            if (!board.Fields[row][col].HasFlag)
             {
-                boardViewModel.GameStatus = GameStatus.Lost;
-            }
-            else
-            {
-                OpenFields(row, col, board);
-            }
+                board.Fields[row][col].IsOpened = true;
 
-            _repo.SaveGame(board);
+                if (!board.Fields[row][col].HasMine)
+                {
+                    OpenFields(row, col, board);
+                }
+                
+                _repo.SaveGame(board);
 
-            if (boardViewModel.GameStatus == GameStatus.Lost)
-                return boardViewModel;
+                if (boardViewModel.GameStatus == GameStatus.Lost || boardViewModel.GameStatus == GameStatus.Won)
+                    return boardViewModel;
+            }
             
             return BoardViewModel.CleanBoardViewModelFromMineInfo(boardViewModel);
         }

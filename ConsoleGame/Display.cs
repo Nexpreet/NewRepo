@@ -25,6 +25,8 @@ namespace ConsoleGame
             for(int l=0; l<_board.Board.Width; l++) Console.Write("{0, 3}", l+1);
             Console.WriteLine();
             Console.WriteLine();
+            GameStatus gameStatus = _board.GameStatus;
+            
             for (int i=0; i<_board.Board.Height; i++)
             {                   
                 Console.Write("{0, 3}", i+1);
@@ -33,13 +35,14 @@ namespace ConsoleGame
                 {
                     FieldModel field = _board.Board.Fields[i][j];
 
-                    if (field.IsOpened)
+                    if (field.IsOpened || gameStatus==GameStatus.Won || gameStatus == GameStatus.Lost)
                     {
                         if (field.HasMine) Console.Write("{0, 3}", "*");
+                        else if (field.NumberOfMinesAround>0) Console.Write("{0, 3}", field.NumberOfMinesAround.ToString());
                         else Console.Write("{0, 3}", " ");
                     }
-                    else if (field.HasFlag) Console.Write("{0, 3}", "P");
-                    else Console.Write("{0, 3}", "X");
+                    else if (field.HasFlag) Console.Write("{0, 3}", "⚑");
+                    else Console.Write("{0, 3}", ".");
                 }
                 Console.WriteLine();
             }
